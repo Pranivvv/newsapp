@@ -8,13 +8,13 @@ export class News extends Component {
     this.state={
       articles: [],
       loding: false,
-      page:1
+      page:1,
     }
   }
 
   
   async componentDidMount() {
-    let url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=1&pageSize=10";
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json()
     console.log(parsedData);
@@ -23,7 +23,7 @@ export class News extends Component {
 
   prevPage= async ()=>{
     console.log(this.state.page-1)
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=${this.state.page - 1}&pageSize=10`;
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json()
     console.log(parsedData);
@@ -35,7 +35,7 @@ export class News extends Component {
 
   nextPage= async ()=>{
     console.log(this.state.page+1)
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=${this.state.page + 1}&pageSize=10`;
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json()
     console.log(parsedData);
@@ -61,7 +61,7 @@ export class News extends Component {
         </div>
         <div className="container d-flex flex-wrap justify-content-around">
           <button disabled={this.state.page<=1} type="button" className={`btn btn-outline-${this.props.mode==='light'?'dark':'light'}`} onClick={this.prevPage}>&larr; Secondary</button>
-          <button disabled={(this.state.page + 1)>Math.ceil(this.state.totalResults/10)} type="button" className={`btn btn-outline-${this.props.mode==='light'?'dark':'light'}`} onClick={this.nextPage}>Next &rarr;</button>
+          <button disabled={(this.state.page + 1)>Math.ceil(this.state.totalResults/this.props.pageSize)} type="button" className={`btn btn-outline-${this.props.mode==='light'?'dark':'light'}`} onClick={this.nextPage}>Next &rarr;</button>
         </div>
       </div>
     )
