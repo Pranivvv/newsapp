@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import NewsItem from './NewsItem'
+import Spinner from './Spinner';
 
 export class News extends Component {
   constructor() {
@@ -49,6 +50,7 @@ export class News extends Component {
     return (
       <div className='container d-flex align-items-center flex-column  mb-3' data-bs-theme={this.props.mode}>
         <h1 className='my-3 ' >Top News - From all around the world</h1>
+        <Spinner />
         <div className='d-flex flex-wrap justify-content-center' >
           {this.state.articles.map((article)=>{
             const { urlToImage: imageUrl, title, description, url: newsUrl } = article;
