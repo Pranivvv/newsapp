@@ -6,7 +6,7 @@ export class News extends Component {
   constructor() {
     super();
     this.state={
-      arti1cles: [],
+      articles: [],
       loding: false,
       page:1
     }
@@ -14,39 +14,54 @@ export class News extends Component {
 
   
   async componentDidMount() {
-    let url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6";
+    let url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=1&pageSize=10";
     let data = await fetch(url);
     let parsedData = await data.json()
     console.log(parsedData);
-    this.setState({arti1cles: parsedData.arti1cles})
+    this.setState({articles: parsedData.articles, totalResults: parsedData.totalResults})
   }
 
   prevPage= async ()=>{
-    console.log('previous')
+    console.log(this.state.page-1)
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=${this.state.page - 1}&pageSize=10`;
+    let data = await fetch(url);
+    let parsedData = await data.json()
+    console.log(parsedData);
+    this.setState({
+      articles: parsedData.articles,
+      page:this.state.page-1
+    })
   }
 
   nextPage= async ()=>{
-    console.log('next')
+    console.log(this.state.page+1)
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=56593e3a139c4e5f8b5c1a1e474239e6&page=${this.state.page + 1}&pageSize=10`;
+    let data = await fetch(url);
+    let parsedData = await data.json()
+    console.log(parsedData);
     this.setState({
-      page:this.state.page+1,
-
+      articles: parsedData.articles,
+      page:this.state.page+1
     })
   }
 
   render() {
     return (
-      <div className='container d-flex flex-wrap justify-content-center' data-bs-theme={this.props.mode}>
+      <div className='container d-flex align-items-center flex-column  mb-3' data-bs-theme={this.props.mode}>
         <h1 className='my-3 ' >Top News - From all around the world</h1>
         <div className='d-flex flex-wrap justify-content-center' >
-          {this.arti1cles.map((article)=>{
-            return <div className="my-3 mx-3 " key={article.url}>
-                    <NewsItem imageUrl={article.urlToImage} title={article.title >= 43 ? article.title : (article.title.slice(0,45)+'...')} description={article.description >= 88 ? article.description : (article.description.slice(0,90)+'...')} newsUrl={article.url} mode={this.props.mode} />
-                  </div>
+          {this.state.articles.map((article)=>{
+            const { urlToImage: imageUrl, title, description, url: newsUrl } = article;
+            if(imageUrl && title && description && newsUrl){
+              return <div className="my-3 mx-3 " key={article.url}>
+                      <NewsItem imageUrl={imageUrl} title={title >= 43 ? title : (title.slice(0,45)+'...')} description={description >= 88 ? description : (description.slice(0,90)+'...')} newsUrl={newsUrl} mode={this.props.mode} />
+                    </div>
+            }
           })}
         </div>
         <div className="container d-flex flex-wrap justify-content-around">
           <button disabled={this.state.page<=1} type="button" className={`btn btn-outline-${this.props.mode==='light'?'dark':'light'}`} onClick={this.prevPage}>&larr; Secondary</button>
-          <button type="button" className={`btn btn-outline-${this.props.mode==='light'?'dark':'light'}`} onClick={this.nextPage}>Next &rarr;</button>
+          <button disabled={(this.state.page + 1)>Math.ceil(this.state.totalResults/10)} type="button" className={`btn btn-outline-${this.props.mode==='light'?'dark':'light'}`} onClick={this.nextPage}>Next &rarr;</button>
         </div>
       </div>
     )
