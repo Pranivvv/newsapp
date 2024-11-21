@@ -38,6 +38,7 @@ export default class App extends Component {
         <>
           <Navbar mode={this.state.mode} changeMode={this.changeMode} />
           <News
+            key={category}
             mode={this.state.mode}
             apiKey={this.state.apiKey}
             pageSize={this.state.pageSize}
