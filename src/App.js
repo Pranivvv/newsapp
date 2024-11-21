@@ -1,26 +1,22 @@
-// apiKey = 56593e3a139c4e5f8b5c1a1e474239e6
-
-
 import './App.css';
 import Navbar from './components/Navbar';
 import News from './components/News';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 export default class App extends Component {
-
-  constructor(){
-    super()
+  constructor() {
+    super();
     this.state = {
       mode: 'light',
-      apiKey:  '56593e3a139c4e5f8b5c1a1e474239e6',
+      apiKey: '56593e3a139c4e5f8b5c1a1e474239e6',
       pageSize: 8,
       country: 'us',
-      category: 'general'
+      category: 'general',
     };
   }
 
@@ -34,47 +30,30 @@ export default class App extends Component {
   };
 
   render() {
-    const router = createBrowserRouter([
-      {
-        path: "/",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='general'/>,
-    },
-    {
-        path: "/business",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='business'/>,
-    },
-    {
-        path: "/entertainment",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='entertainment'/>,
-    },
-    {
-        path: "/general",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='general'/>,
-    },
-    {
-        path: "/health",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='health'/>,
-    },
-    {
-        path: "/science",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='science'/>,
-    },
-    {
-        path: "/sports",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='sports'/>,
-    },
-    {
-        path: "/technology",
-        element: <News mode={this.state.mode} apiKey= {this.state.apiKey} pageSize={this.state.pageSize} country={this.state.country} category='technology'/>,
-    }
-    ]);
+    const categories = ['general', 'business', 'entertainment', 'health', 'science', 'sports', 'technology'];
+
+    const routes = categories.map((category) => ({
+      path: category === 'general' ? '/' : `/${category}`,
+      element: (
+        <>
+          <Navbar mode={this.state.mode} changeMode={this.changeMode} />
+          <News
+            mode={this.state.mode}
+            apiKey={this.state.apiKey}
+            pageSize={this.state.pageSize}
+            country={this.state.country}
+            category={category}
+          />
+        </>
+      ),
+    }));
+
+    const router = createBrowserRouter(routes);
 
     return (
       <>
-        <Navbar mode={this.state.mode} changeMode={this.changeMode}/>
         <RouterProvider router={router} />
       </>
-    )
+    );
   }
 }
-
