@@ -14,7 +14,7 @@ export default class App extends Component {
     super();
     this.state = {
       mode: 'light',
-      apiKey: '56593e3a139c4e5f8b5c1a1e474239e6',
+      apiKey: process.env.REACT_NEWSAPP_NEWS_APIKEY,
       pageSize: 8,
       country: 'us',
       category: 'general',
