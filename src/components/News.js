@@ -84,11 +84,11 @@ export class News extends Component {
           (!this.state.loading) &&
           <div className='d-flex flex-wrap justify-content-center' >
           {this.state.articles.map((article)=>{
-            const { urlToImage: imageUrl, title, description, url: newsUrl } = article;
+            const { urlToImage: imageUrl, title, description, url: newsUrl, author, publishedAt:date} = article;
             if(imageUrl && title && description && newsUrl){
               return <div className="my-3 mx-3 " key={article.url}>
-                      <NewsItem imageUrl={imageUrl} title={title >= 43 ? title : (title.slice(0,45)+'...')} description={description >= 88 ? description : (description.slice(0,90)+'...')} newsUrl={newsUrl} mode={this.props.mode} />
-                    </div>
+                      <NewsItem imageUrl={imageUrl} title={title >= 43 ? title : (title.slice(0,45)+'...')} description={description >= 88 ? description : (description.slice(0,90)+'...')} newsUrl={newsUrl} mode={this.props.mode} author={!author?"unknown":author} date={date}/>
+                     </div>
             }
           })}
         </div>
