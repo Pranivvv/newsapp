@@ -33,6 +33,10 @@ export class News extends Component {
     }
   }
 
+  capitalizeFirstLetter = (word)=> {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
   async updateNews() {
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true })
@@ -44,6 +48,7 @@ export class News extends Component {
       totalResults: parsedData.totalResults,
       loading: false
     })
+    document.title=`News - ${this.capitalizeFirstLetter(this.props.category)}`
   }
 
   async componentDidMount() {
@@ -65,7 +70,7 @@ export class News extends Component {
   render() {
     return (
       <div className='container d-flex align-items-center flex-column  mb-3' data-bs-theme={this.props.mode}>
-        <h1 className='my-3 ' >Top News - From all around the world</h1>
+        <h1 className='my-3 ' >Top News - {this.capitalizeFirstLetter(this.props.category)}</h1>
         {this.state.loading && <Spinner />}
         {
           (!this.state.loading) &&
