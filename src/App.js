@@ -7,6 +7,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
+import LoadingBar from 'react-top-loading-bar';
 
 export default class App extends Component {
   constructor() {
@@ -17,6 +18,7 @@ export default class App extends Component {
       pageSize: 8,
       country: 'us',
       category: 'general',
+      progress: 0
     };
   }
 
@@ -29,6 +31,10 @@ export default class App extends Component {
     });
   };
 
+  setProgress = (progress) => {
+    this.setState({ progress })
+  }
+
   render() {
     const categories = ['general', 'business', 'entertainment', 'health', 'science', 'sports', 'technology'];
 
@@ -38,6 +44,7 @@ export default class App extends Component {
         <>
           <Navbar mode={this.state.mode} changeMode={this.changeMode} />
           <News
+            setProgress={this.setProgress}
             key={category}
             mode={this.state.mode}
             apiKey={this.state.apiKey}
@@ -53,6 +60,10 @@ export default class App extends Component {
 
     return (
       <>
+        <LoadingBar
+          color='#f11946'
+          progress={this.state.progress}
+        />
         <RouterProvider router={router} />
       </>
     );
